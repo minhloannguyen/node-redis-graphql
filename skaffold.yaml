@@ -1,0 +1,23 @@
+apiVersion: skaffold/v1alpha2
+kind: Config
+build:
+  tagPolicy:
+    sha256: {}
+  artifacts:
+  - imageName: 509523788277.dkr.ecr.ap-southeast-1.amazonaws.com/mytour/contents-api
+deploy:
+  helm:
+    releases:
+    - name: mt-contents-api
+      chartPath: helm-chart
+      namespace: dev
+      # valuesFilePath: helm-skaffold-values.yaml
+      values:
+        image: 509523788277.dkr.ecr.ap-southeast-1.amazonaws.com/mytour/contents-api
+      # setValues get appended to the helm deploy with --set.
+      setValues:
+        envSecretName: contents-api-dev
+        ingress.enabled: true
+        ingress.hosts[0]: contents-api-dev.mytour.vn
+        ingress.tls[0].secretName: mytour-tls
+        ingress.tls[0].hosts[0]: contents-api-dev.mytour.vn

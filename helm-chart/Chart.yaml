@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Mytour's contents api using graphql and redis
+name: mt-contents-api
+version: 0.0.1

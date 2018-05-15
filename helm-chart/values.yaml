@@ -1,0 +1,38 @@
+replicaCount: 1
+image:
+  repository: 509523788277.dkr.ecr.ap-southeast-1.amazonaws.com/mytour/contents-api
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  name: contents-api
+  type: ClusterIP
+  externalPort: 80
+  internalPort: 3000
+ingress:
+  enabled: false
+  # Used to create an Ingress record.
+  hosts:
+    - mt-contents-api.local
+  annotations:
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+    ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.allow-http: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: "30m"
+    nginx.ingress.kubernetes.io/client-max-body-size: "30m"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "180s"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "180s"
+  tls:
+    # Secrets must be manually created in the namespace.
+    # - secretName: mt-contents-api-tls
+    #   hosts:
+    #     - mt-contents-api.local
+resources:
+  limits:
+   cpu: 300m
+   memory: 300Mi
+  requests:
+   cpu: 100m
+   memory: 100Mi
+
+envSecretName: ""
